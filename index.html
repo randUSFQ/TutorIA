@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Perfecta — Tutor de Inglés · Past &amp; Present Perfect</title>
+<meta name="description" content="Tutor inteligente hiperrealista para aprender Past Perfect y Present Perfect, con escenarios profesionales, voz y retroalimentación adaptativa.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<!-- ============ TOP BAR ============ -->
+<header class="topbar">
+  <div class="brand">
+    <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true">
+      <circle cx="20" cy="20" r="18" fill="none" stroke="currentColor" stroke-width="1.4"/>
+      <path d="M12 21 L17.5 26.5 L28.5 14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <div class="brand-text">
+      <span class="brand-name">Perfecta</span>
+      <span class="brand-sub">Past &amp; Present Perfect Tutor</span>
+    </div>
+  </div>
+
+  <nav class="top-tabs" role="tablist" aria-label="Modo de trabajo">
+    <button class="top-tab is-active" data-view="learn" role="tab" aria-selected="true">Aprender</button>
+    <button class="top-tab" data-view="practice" role="tab" aria-selected="false">Practicar</button>
+    <button class="top-tab" data-view="conversation" role="tab" aria-selected="false">Conversación</button>
+    <button class="top-tab" data-view="analytics" role="tab" aria-selected="false">Progreso</button>
+  </nav>
+
+  <div class="top-actions">
+    <button id="themeToggle" class="icon-btn" title="Cambiar tema" aria-label="Cambiar entre modo claro y oscuro">
+      <svg viewBox="0 0 24 24" class="icon-sun"><circle cx="12" cy="12" r="4.2"/><g stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><line x1="12" y1="1.5" x2="12" y2="4.5"/><line x1="12" y1="19.5" x2="12" y2="22.5"/><line x1="1.5" y1="12" x2="4.5" y2="12"/><line x1="19.5" y1="12" x2="22.5" y2="12"/><line x1="4.4" y1="4.4" x2="6.5" y2="6.5"/><line x1="17.5" y1="17.5" x2="19.6" y2="19.6"/><line x1="4.4" y1="19.6" x2="6.5" y2="17.5"/><line x1="17.5" y1="6.5" x2="19.6" y2="4.4"/></g></svg>
+      <svg viewBox="0 0 24 24" class="icon-moon" hidden><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4 8.6 8.6 0 1 0 20 14.5Z"/></svg>
+    </button>
+  </div>
+</header>
+
+<!-- ============ APP SHELL ============ -->
+<div class="app-shell">
+
+  <!-- LEFT RAIL: profession + level -->
+  <aside class="rail rail-left" aria-label="Perfil de práctica">
+    <div class="rail-block">
+      <h2 class="rail-title">Tu campo</h2>
+      <div class="profession-grid" id="professionGrid"><!-- injected --></div>
+    </div>
+
+    <div class="rail-block">
+      <h2 class="rail-title">Nivel CEFR</h2>
+      <div class="level-track" id="levelTrack" aria-label="Nivel de inglés detectado">
+        <!-- injected -->
+      </div>
+      <p class="level-caption" id="levelCaption">B1 · Se ajusta automáticamente según tus respuestas</p>
+    </div>
+
+    <div class="rail-block">
+      <h2 class="rail-title">Voz</h2>
+      <label class="switch-row">
+        <span>Leer explicaciones en voz alta</span>
+        <input type="checkbox" id="voiceToggle" checked>
+        <span class="switch-pill" aria-hidden="true"></span>
+      </label>
+      <p class="hint-text" id="speechSupportHint"></p>
+    </div>
+  </aside>
+
+  <!-- CENTER STAGE -->
+  <main class="stage" id="stage">
+
+    <!-- Scene + Avatar + Dossier -->
+    <section class="scene-panel" id="scenePanel" aria-label="Escenario profesional">
+      <div class="scene-backdrop" id="sceneBackdrop"><!-- profession SVG injected --></div>
+
+      <div class="avatar-wrap">
+        <svg id="avatarSvg" class="avatar" viewBox="0 0 200 220" role="img" aria-label="Avatar del tutor">
+          <!-- filled by avatar.js -->
+        </svg>
+        <div class="avatar-status" id="avatarStatus">Lista para empezar</div>
+      </div>
+
+      <div class="dossier" id="dossierPanel">
+        <div class="dossier-head">
+          <span class="dossier-eyebrow" id="dossierEyebrow">EXPEDIENTE</span>
+          <span class="dossier-level" id="dossierLevel">B1</span>
+        </div>
+        <p class="dossier-scenario" id="dossierScenario">Selecciona tu campo profesional para comenzar.</p>
+      </div>
+    </section>
+
+    <!-- Speech bubble: tutor talk -->
+    <section class="tutor-bubble" id="tutorBubble" aria-live="polite">
+      <p id="tutorText">Hola. Soy tu tutora de inglés. Vamos a dominar el <strong>Present Perfect</strong> y el <strong>Past Perfect</strong> juntos, aplicados a tu profesión. ¿Listo para empezar?</p>
+      <button class="ghost-btn small" id="replayVoiceBtn" title="Repetir en voz alta">🔊 Repetir</button>
+    </section>
+
+    <!-- VIEW: Learn -->
+    <section class="view-panel is-active" id="view-learn">
+      <div class="lesson-grid">
+        <article class="lesson-card">
+          <h3>Present Perfect <span class="tag">have/has + participio</span></h3>
+          <p>Conecta una acción pasada con el <strong>presente</strong>. No importa exactamente cuándo ocurrió; importa su relevancia ahora.</p>
+          <ul class="lesson-points">
+            <li>Experiencia de vida: <em>I have visited three hospitals this year.</em></li>
+            <li>Acción reciente con resultado visible: <em>She has finished the report.</em></li>
+            <li>Acción que empezó en el pasado y continúa: <em>They have worked here since 2019.</em></li>
+          </ul>
+          <div class="signal-row"><span class="signal-label">Señales:</span> already, yet, just, ever, never, since, for, so far</div>
+        </article>
+        <article class="lesson-card">
+          <h3>Past Perfect <span class="tag">had + participio</span></h3>
+          <p>Describe una acción que ocurrió <strong>antes que otra acción pasada</strong>. Es el "pasado del pasado".</p>
+          <ul class="lesson-points">
+            <li>El paciente ya se había estabilizado cuando llegó el médico: <em>The patient had stabilized before the doctor arrived.</em></li>
+            <li>Doble acción pasada: <em>The engineers had tested the prototype before the inspection began.</em></li>
+          </ul>
+          <div class="signal-row"><span class="signal-label">Señales:</span> before, after, by the time, already (en pasado), when</div>
+        </article>
+      </div>
+      <button class="primary-btn" id="startPracticeBtn">Empezar a practicar →</button>
+    </section>
+
+    <!-- VIEW: Practice (exercises) -->
+    <section class="view-panel" id="view-practice">
+      <div class="exercise-topline">
+        <span class="ex-type-chip" id="exTypeChip">Multiple Choice</span>
+        <div class="lives" id="livesRow" aria-label="Vidas restantes"></div>
+      </div>
+
+      <div class="exercise-card" id="exerciseCard">
+        <p class="exercise-prompt" id="exercisePrompt">Cargando ejercicio…</p>
+        <div class="exercise-body" id="exerciseBody"></div>
+
+        <div class="exercise-controls">
+          <button class="ghost-btn" id="hintBtn">💡 Pista</button>
+          <button class="ghost-btn" id="micBtn" title="Responder por voz">🎙️ Responder hablando</button>
+          <button class="primary-btn" id="checkBtn">Comprobar</button>
+        </div>
+      </div>
+
+      <div class="feedback-panel" id="feedbackPanel" hidden>
+        <div class="feedback-head">
+          <span id="feedbackIcon">✅</span>
+          <span id="feedbackTitle">Excellent!</span>
+        </div>
+        <p id="feedbackExplain"></p>
+        <div class="feedback-actions">
+          <button class="ghost-btn" id="retryBtn" hidden>Intentar de nuevo</button>
+          <button class="primary-btn" id="nextBtn">Siguiente ejercicio →</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW: Conversation / Role play -->
+    <section class="view-panel" id="view-conversation">
+      <div class="convo-card">
+        <p class="convo-intro">Modo conversación: describe una situación de tu campo usando Present Perfect o Past Perfect. La tutora evaluará tu gramática, no solo tu vocabulario.</p>
+        <div class="convo-log" id="convoLog" aria-live="polite"></div>
+        <div class="convo-input-row">
+          <input type="text" id="convoInput" placeholder="Escribe o dicta tu respuesta…" autocomplete="off">
+          <button class="ghost-btn" id="convoMicBtn" title="Hablar">🎙️</button>
+          <button class="primary-btn" id="convoSendBtn">Enviar</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW: Analytics -->
+    <section class="view-panel" id="view-analytics">
+      <div class="analytics-grid" id="analyticsGrid"><!-- injected --></div>
+    </section>
+
+  </main>
+
+  <!-- RIGHT RAIL: gamification -->
+  <aside class="rail rail-right" aria-label="Progreso y logros">
+    <div class="rail-block xp-block">
+      <div class="xp-row">
+        <span class="xp-label">XP</span>
+        <span class="xp-value" id="xpValue">0</span>
+      </div>
+      <div class="xp-bar"><div class="xp-bar-fill" id="xpBarFill"></div></div>
+      <p class="xp-caption" id="xpCaption">0 / 100 para el siguiente nivel</p>
+    </div>
+
+    <div class="rail-block">
+      <div class="stat-row"><span>🔥 Racha</span><strong id="streakValue">0</strong></div>
+      <div class="stat-row"><span>🎯 Precisión</span><strong id="accuracyValue">—</strong></div>
+      <div class="stat-row"><span>⏱️ Tiempo activo</span><strong id="timeValue">0m</strong></div>
+    </div>
+
+    <div class="rail-block">
+      <h2 class="rail-title">Logros</h2>
+      <div class="badge-grid" id="badgeGrid"><!-- injected --></div>
+    </div>
+
+    <div class="rail-block">
+      <h2 class="rail-title">Reto diario</h2>
+      <p class="daily-challenge" id="dailyChallenge"></p>
+    </div>
+  </aside>
+
+</div>
+
+<footer class="app-footer">
+  <span>Perfecta — proyecto educativo local. Sin conexión a servidores externos salvo APIs de voz del navegador.</span>
+</footer>
+
+<script src="js/scenarios.js"></script>
+<script src="js/speech.js"></script>
+<script src="js/avatar.js"></script>
+<script src="js/exercises.js"></script>
+<script src="js/tutor.js"></script>
+<script src="js/analytics.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
